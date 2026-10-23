@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.mainTeleop;
+package org.firstinspires.ftc.teamcode.earlyCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,19 +6,19 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.methods.mecanumDrive;
-import org.firstinspires.ftc.teamcode.methods.pidfMethod;
+import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive;
 
 // robot relative w/ intake
 @TeleOp()
+@Deprecated
 public class mecanumopmode extends OpMode{
 
-    mecanumDrive drive = new mecanumDrive();
+    MecanumDrive drive = new MecanumDrive();
     double forward, strafe, rotate;
     private CRServo intakeR;
     private CRServo intakeL;
     private DcMotor intake;
-    private pidfMethod arm;
+    private PidfMethod arm;
     private DcMotorEx l;
     private DcMotorEx r;
     static final int ARM_DOWN = 0, ARM_LOW = 230, ARM_HIGH = 340;
@@ -31,7 +31,7 @@ public class mecanumopmode extends OpMode{
        drive.init(hardwareMap);
          l = hardwareMap.get(DcMotorEx.class, "LeftArm");
          r = hardwareMap.get(DcMotorEx.class, "RightArm ");
-        arm = new pidfMethod(l, r);
+        arm = new PidfMethod(l, r);
         arm.initMotors();
     }
 
@@ -41,7 +41,7 @@ public class mecanumopmode extends OpMode{
         strafe = gamepad1.left_stick_x;
         rotate = gamepad1.right_stick_x;
 
-        drive.drive(forward, strafe, rotate);
+        drive.driveRobotRelative(forward, strafe, rotate);
 
         double intakePower = gamepad2.right_trigger;
         double extakePower = gamepad2.left_trigger;

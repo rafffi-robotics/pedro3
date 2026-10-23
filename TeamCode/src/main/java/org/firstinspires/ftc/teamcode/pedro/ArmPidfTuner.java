@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.methods.pidfMethod;
+import org.firstinspires.ftc.teamcode.earlyCode.PidfMethod;
 
 
 @Configurable
@@ -39,7 +39,7 @@ public class ArmPidfTuner extends OpMode {
 
     private DcMotorEx leftArm;
     private DcMotorEx rightArm;
-    private pidfMethod controller;
+    private PidfMethod controller;
     private TelemetryManager telemetryM;
 
     @Override
@@ -49,7 +49,7 @@ public class ArmPidfTuner extends OpMode {
         leftArm = hardwareMap.get(DcMotorEx.class, "LeftArm");
         rightArm = hardwareMap.get(DcMotorEx.class, "RightArm");
 
-        controller = new pidfMethod(leftArm, rightArm);
+        controller = new PidfMethod(leftArm, rightArm);
         controller.initMotors();
 
 
@@ -71,16 +71,16 @@ public class ArmPidfTuner extends OpMode {
          * Copy the current Panels values into your controller.
          * This happens every loop, so changes apply immediately.
          */
-        pidfMethod.kP = kP;
-        pidfMethod.kI = kI;
-        pidfMethod.kD = kD;
-        pidfMethod.kF = kF;
+        PidfMethod.kP = kP;
+        PidfMethod.kI = kI;
+        PidfMethod.kD = kD;
+        PidfMethod.kF = kF;
 
-        pidfMethod.MAX_POWER = MAX_POWER;
-        pidfMethod.TOLERANCE_TICKS = TOLERANCE_TICKS;
-        pidfMethod.I_ZONE_TICKS = I_ZONE_TICKS;
-        pidfMethod.MAX_INTEGRAL = MAX_INTEGRAL;
-        pidfMethod.ARM_OFFSET_DEG = ARM_OFFSET_DEG;
+        PidfMethod.MAX_POWER = MAX_POWER;
+        PidfMethod.TOLERANCE_TICKS = TOLERANCE_TICKS;
+        PidfMethod.I_ZONE_TICKS = I_ZONE_TICKS;
+        PidfMethod.MAX_INTEGRAL = MAX_INTEGRAL;
+        PidfMethod.ARM_OFFSET_DEG = ARM_OFFSET_DEG;
 
         controller.setTarget(TARGET_TICKS);
 

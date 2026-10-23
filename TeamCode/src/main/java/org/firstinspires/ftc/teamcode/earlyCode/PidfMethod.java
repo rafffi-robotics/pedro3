@@ -1,11 +1,12 @@
 
-        package org.firstinspires.ftc.teamcode.methods;
+        package org.firstinspires.ftc.teamcode.earlyCode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 
 /**
  * PIDF position controller for a reverse double 4-bar with TWO encoded motors.
@@ -15,7 +16,8 @@ import com.qualcomm.robotcore.util.Range;
  *
  * ALL GAINS ARE 0 -> the arm will not move until you tune. Notes at the bottom.
  */
-public class pidfMethod {
+@Deprecated
+public class PidfMethod {
 
     // ================= TUNE THESE =================
     public static double kP = 0.015;
@@ -55,7 +57,7 @@ public class pidfMethod {
 
     private static final double D_FILTER = 0.8;  // 0 = none, 0.9 = heavy
 
-    public pidfMethod(DcMotorEx left, DcMotorEx right) {
+    public PidfMethod(DcMotorEx left, DcMotorEx right) {
         this.left = left;
         this.right = right;
         timer.reset();

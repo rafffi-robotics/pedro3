@@ -1,15 +1,16 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.earlyCode;
 // FIELD RELATIVE JV WITH INTAKE
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.methods.mecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive;
 
 @TeleOp()
+@Deprecated
 public class fieldRelativeTeleop extends OpMode{
-    mecanumDrive drive = new mecanumDrive();
+    MecanumDrive drive = new MecanumDrive();
 
     double forward, strafe, rotate;
     private CRServo intakeR;
@@ -28,7 +29,7 @@ public class fieldRelativeTeleop extends OpMode{
        strafe = gamepad1.left_stick_x;
        rotate = gamepad1.right_stick_x;
 
-       drive.drive(forward, strafe, rotate);
+       drive.driveRobotRelative(forward, strafe, rotate);
 
        double intakePower = gamepad1.right_trigger;
        double extakePower = gamepad1.left_trigger;

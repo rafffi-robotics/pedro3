@@ -12,10 +12,9 @@ public class InternalPid {
         flywheel = hwMap.get(DcMotorEx.class,"flywheel");
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    public void setTargetRpm(){
-        flywheel.setVelocity(3000);
+
     }
-}
+
 
 
 

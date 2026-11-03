@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.MecanumDrive;
@@ -16,6 +17,7 @@ public class MecanumExample extends OpMode {
     MecanumDrive drive = new MecanumDrive();
     Intake intake = new Intake();
     public DcMotorEx flywheel;
+    public DcMotorEx flywheelNectar;
     public int targetVel = 0;
 
 
@@ -29,19 +31,23 @@ public class MecanumExample extends OpMode {
         drive.init(hardwareMap);
         intake.init(hardwareMap);
         flywheel = hardwareMap.get(DcMotorEx.class,"flywheel");
+        flywheelNectar = hardwareMap.get(DcMotorEx.class,"flywheelNectar");
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        PIDFCoefficients trialPIDF = new PIDFCoefficients(0.1, 0.2, 0.001, 12);
+        //PIDFCoefficients trialPIDF = new PIDFCoefficients(0.1, 0.2, 0.001, 12);
+       // PIDFCoefficients nectarPIDF = new PIDFCoefficients(.1, .2, .001, 12);
 
-        //flywheel.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, trialPIDF);
+       // flywheel.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, new PIDFCoefficients());
+       // flywheelNectar.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, nectarPIDF);
     }
 
     @Override
     public void start() {
-
+//hi
     }
 
     @Override
     public void loop() {
+        targetVel = Range.clip(targetVel, 0, 1800);
         telemetry.addData("Target Velocity:", targetVel);
         telemetry.addData("Actual Velocity:", flywheel.getVelocity());
         forward = -gamepad1.left_stick_y;
@@ -49,7 +55,7 @@ public class MecanumExample extends OpMode {
         rotate = gamepad1.right_stick_x;
         drive.driveRobotRelative(forward, strafe, rotate);
         flywheel.setVelocity(targetVel);
-
+        flywheelNectar.setVelocity(targetVel);
         if (gamepad1.right_trigger > 0.1) {
             intake.setPower(1);
         } else if (gamepad1.left_trigger > 0.1) {
@@ -58,10 +64,10 @@ public class MecanumExample extends OpMode {
             intake.setPower(0);
         }
         if (gamepad1.dpadUpWasPressed()){
-           targetVel = targetVel + 10;
+           targetVel = targetVel + 1800;
         }
         if (gamepad1.dpadDownWasPressed()){
-            targetVel =targetVel - 10;
+            targetVel = targetVel - 1800;
         }
 
     }

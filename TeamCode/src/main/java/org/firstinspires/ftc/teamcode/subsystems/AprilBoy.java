@@ -4,6 +4,7 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
@@ -14,6 +15,7 @@ public class AprilBoy extends OpMode {
 
     private Limelight3A limelight;
     public boolean autoaim;
+    public double tx;
 
     @Override
     public void init() {
@@ -25,23 +27,36 @@ public class AprilBoy extends OpMode {
         imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
     }
 
-        @Override
-        public void start () {
-            limelight.start();
-        }
+    @Override
+    public void start() {
+        limelight.start();
+    }
 
-        @Override
-        public void loop () {
+    @Override
+    public void loop() {
 //            YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
 //            limelight.updateRobotOrientation(orientation.getYaw());
-            LLResult llResult =limelight.getLatestResult();
-            if (llResult != null && llResult.isValid()){
-                Pose3D botpose = llResult.getBotpose                                                            ();
-                telemetry.addData("tx",llResult.getTx());
-                telemetry.addData("ta",llResult.getTa());
-                telemetry.addData("ty",llResult.getTy());
+        LLResult llResult = limelight.getLatestResult();
+        if (llResult != null && llResult.isValid()) {
+            Pose3D botpose = llResult.getBotpose();
+            tx = llResult.getTx();
+            telemetry.addData("tx", llResult.getTx());
+            telemetry.addData("ta", llResult.getTa());
+            telemetry.addData("ty", llResult.getTy());
 
         }
+    }
+
+    public void update() {
+        LLResult llResult = limelight.getLatestResult();
+
+        if (llResult != null && llResult.isValid()) {
+            tx = llResult.getTx();
+        }
+    }
+
+    public double getTx() {
+        return tx;
     }
 }
 

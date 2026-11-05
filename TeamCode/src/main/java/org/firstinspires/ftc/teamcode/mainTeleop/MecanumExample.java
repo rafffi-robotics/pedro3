@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 import com.seattlesolvers.solverslib.util.Timing;
@@ -39,8 +40,10 @@ public class MecanumExample extends OpMode {
         drive.init(hardwareMap);
         intake.init(hardwareMap);
         flywheel = hardwareMap.get(DcMotorEx.class,"flywheel");
-        flywheelNectar = hardwareMap.get(DcMotorEx.class,"flywheelNectar");
-        pollenGate = hardwareMap.get(ServoEx.class,"pollenGate");
+      //  flywheelNectar = hardwareMap.get(DcMotorEx.class,"flywheelNectar");
+
+
+        pollenGate = new ServoEx(hardwareMap, "pollenGate");
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //PIDFCoefficients trialPIDF = new PIDFCoefficients(0.1, 0.2, 0.001, 12);
        // PIDFCoefficients nectarPIDF = new PIDFCoefficients(.1, .2, .001, 12);
@@ -57,14 +60,14 @@ public class MecanumExample extends OpMode {
     @Override
     public void loop() {
         targetVel = Range.clip(targetVel, 0, 1800);
-        telemetry.addData("Target Velocity:", targetVel);
-        telemetry.addData("Actual Velocity:", flywheel.getVelocity());
+//        telemetry.addData("Target Velocity:", targetVel);
+//        telemetry.addData("Actual Velocity:", flywheel.getVelocity());
         forward = -gamepad1.left_stick_y;
         strafe = -gamepad1.left_stick_x;
         rotate = gamepad1.right_stick_x;
         drive.driveRobotRelative(forward, strafe, rotate);
         flywheel.setVelocity(targetVel);
-        flywheelNectar.setVelocity(targetVel);
+//        flywheelNectar.setVelocity(targetVel);
         if (gamepad1.right_trigger > 0.1) {
             intake.setPower(1);
         } else if (gamepad1.left_trigger > 0.1) {
@@ -79,11 +82,11 @@ public class MecanumExample extends OpMode {
             targetVel = targetVel - 1800;
         }
         if (gamepad1.aWasPressed()) {
-            pollenGate.set(1);
+            pollenGate.set(.2);
             gateTimer.start();
         }
         if (gateTimer.done() && pollenGate.get() != 0) {
-            pollenGate.set(0);
+            pollenGate.set(.8);
         }
     }
 

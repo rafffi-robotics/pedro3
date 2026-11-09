@@ -58,5 +58,9 @@ public class AprilBoy extends OpMode {
     public double getTx() {
         return tx;
     }
+    public boolean isValid() {
+        LLResult llResult = limelight.getLatestResult();
+        return llResult != null && llResult.isValid();
+    }
 }
 

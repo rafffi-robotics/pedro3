@@ -76,18 +76,22 @@ public class MecanumExample extends OpMode {
             intake.setPower(0);
         }
         if (gamepad1.dpadUpWasPressed()){
-           targetVel = targetVel + 1800;
+           targetVel = targetVel + 10;
         }
         if (gamepad1.dpadDownWasPressed()){
-            targetVel = targetVel - 1800;
+            targetVel = targetVel - 10;
         }
         if (gamepad1.aWasPressed()) {
-            pollenGate.set(.2);
+            pollenGate.set(1.0);
             gateTimer.start();
         }
         if (gateTimer.done() && pollenGate.get() != 0) {
-            pollenGate.set(.8);
+            pollenGate.set(.5);
         }
+      telemetry.addData("actual velocity", targetVel);
+        telemetry.addData("flywheel velo",flywheel.getVelocity());
+
+
     }
 
 }

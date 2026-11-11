@@ -5,8 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 import com.seattlesolvers.solverslib.hardware.servos.ServoEx;
 import com.seattlesolvers.solverslib.util.Timing;
@@ -26,7 +25,8 @@ public class MecanumExample extends OpMode {
     public DcMotorEx flywheel;
     public DcMotorEx flywheelNectar;
     public ServoEx pollenGate;
-    public int targetVel = 0;
+    public int flywheelTargetVel = 0;
+    public int nectarTragetVel = 0;
     private Timing.Timer gateTimer = new Timing.Timer(2000, TimeUnit.MILLISECONDS);
 
 
@@ -40,11 +40,13 @@ public class MecanumExample extends OpMode {
         drive.init(hardwareMap);
         intake.init(hardwareMap);
         flywheel = hardwareMap.get(DcMotorEx.class,"flywheel");
+        flywheel.setDirection(DcMotorEx.Direction.REVERSE);
       //  flywheelNectar = hardwareMap.get(DcMotorEx.class,"flywheelNectar");
 
 
         pollenGate = new ServoEx(hardwareMap, "pollenGate");
         flywheel.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+      //flywheelNectar.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //PIDFCoefficients trialPIDF = new PIDFCoefficients(0.1, 0.2, 0.001, 12);
        // PIDFCoefficients nectarPIDF = new PIDFCoefficients(.1, .2, .001, 12);
 
@@ -59,15 +61,15 @@ public class MecanumExample extends OpMode {
 
     @Override
     public void loop() {
-        targetVel = Range.clip(targetVel, 0, 1800);
+        flywheelTargetVel = Range.clip(flywheelTargetVel, 0, 1900);
 //        telemetry.addData("Target Velocity:", targetVel);
 //        telemetry.addData("Actual Velocity:", flywheel.getVelocity());
         forward = -gamepad1.left_stick_y;
-        strafe = -gamepad1.left_stick_x;
+        strafe = gamepad1.left_stick_x;
         rotate = gamepad1.right_stick_x;
         drive.driveRobotRelative(forward, strafe, rotate);
-        flywheel.setVelocity(targetVel);
-//        flywheelNectar.setVelocity(targetVel);
+        flywheel.setVelocity(flywheelTargetVel);
+//        flywheelNectar.setVelocity(nectarTargetVel);
         if (gamepad1.right_trigger > 0.1) {
             intake.setPower(1);
         } else if (gamepad1.left_trigger > 0.1) {
@@ -76,10 +78,10 @@ public class MecanumExample extends OpMode {
             intake.setPower(0);
         }
         if (gamepad1.dpadUpWasPressed()){
-           targetVel = targetVel + 10;
+           flywheelTargetVel = flywheelTargetVel + 1900;
         }
         if (gamepad1.dpadDownWasPressed()){
-            targetVel = targetVel - 10;
+            flywheelTargetVel = flywheelTargetVel - 1900;
         }
         if (gamepad1.aWasPressed()) {
             pollenGate.set(1.0);
@@ -88,7 +90,7 @@ public class MecanumExample extends OpMode {
         if (gateTimer.done() && pollenGate.get() != 0) {
             pollenGate.set(.5);
         }
-      telemetry.addData("actual velocity", targetVel);
+      telemetry.addData("actual velocity", flywheelTargetVel);
         telemetry.addData("flywheel velo",flywheel.getVelocity());
 
 

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
@@ -9,7 +10,7 @@ public class Intake {
 
     public void init(HardwareMap hwmap) {
         motor = hwmap.get(DcMotor.class, "intake");
-    }
+        motor.setDirection(DcMotorSimple.Direction.REVERSE);    }
 
     public void setPower(double power) {
         motor.setPower(power);
